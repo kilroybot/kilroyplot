@@ -5,10 +5,12 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 from urllib.request import urlopen, urlretrieve
 
+from appdirs import user_cache_dir
+
 ASSETS_SEARCH_URL = "https://api.github.com/repos/kilroybot/assets/git/trees/main?recursive=1"
 ENCODING = "utf-8"
 FORMAT = ".ttf"
-CACHE_DIR = Path.cwd() / ".cache" / "fonts"
+CACHE_DIR = Path(user_cache_dir("kilroy")) / "fonts"
 
 
 @dataclass
