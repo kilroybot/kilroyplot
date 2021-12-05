@@ -9,7 +9,6 @@ classifiers = [
     "Operating System :: OS Independent"
 ]
 repository = "https://github.com/kilroybot/kilroyplot"
-documentation = "https://kilroybot.github.io/kilroyplot"
 
 [tool.poetry.dependencies]
 python = "^3.9"
