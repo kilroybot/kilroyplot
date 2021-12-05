@@ -3,7 +3,7 @@ from typing import Sequence
 import matplotlib.pyplot as plt
 from matplotlib import cycler, font_manager
 
-import fonts
+from kilroyplot import fonts
 
 STYLE = "seaborn"
 DPI = 90
