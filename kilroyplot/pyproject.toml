@@ -14,6 +14,8 @@ repository = "https://github.com/kilroybot/kilroyplot"
 python = "^3.9"
 matplotlib = "^3.5"
 appdirs = "^1.4"
+dill = "^0.3"
+cachetools = "^4.2"
 
 # dev
 jupyterlab = { version = "^3", optional = true }
