@@ -1,5 +1,4 @@
 import datetime
-import hashlib
 import json
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -12,28 +11,9 @@ from typing import (
     Union
 )
 
-import dill
 from appdirs import user_cache_dir
 
-from kilroyplot.utils import iter_files
-
-
-def digest_bytes(x: bytes) -> str:
-    return hashlib.md5(x).hexdigest()
-
-
-def digest_args(*args, **kwargs) -> str:
-    args = (args, frozenset(kwargs.items()))
-    return digest_bytes(dill.dumps(args))
-
-
-def serialize(obj) -> bytes:
-    return dill.dumps(obj)
-
-
-def deserialize(b: bytes):
-    return dill.loads(b)
-
+from kilroyplot.utils import deserialize, digest_args, iter_files, serialize
 
 K = TypeVar("K", bound=Hashable)
 V = TypeVar("V")
