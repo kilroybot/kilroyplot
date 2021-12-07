@@ -6,11 +6,17 @@ from typing import Any, Dict, List, Optional, Union
 from urllib.request import urlopen, urlretrieve
 
 from appdirs import user_cache_dir
+from cachetools import cached
+
+from kilroyplot.cache import DiskTTLCache
+from kilroyplot.utils import list_files
 
 ASSETS_SEARCH_URL = "https://api.github.com/repos/kilroybot/assets/git/trees/main?recursive=1"
 ENCODING = "utf-8"
 FORMAT = ".ttf"
-CACHE_DIR = Path(user_cache_dir("kilroy")) / "fonts"
+CACHE_DIR = Path(user_cache_dir("kilroy"))
+ASSETS_CACHE_DIR = CACHE_DIR / "assets"
+FONT_CACHE_DIR = CACHE_DIR / "fonts"
 
 
 @dataclass
@@ -45,6 +51,7 @@ class FileData:
         return Path(self.path).stem
 
 
+@cached(DiskTTLCache(ASSETS_CACHE_DIR))
 def search_assets(
         search_url: str = ASSETS_SEARCH_URL,
         encoding: str = ENCODING
@@ -87,13 +94,12 @@ def sha256_file(
 def get_cached_files(
         cache_dir: Union[str, Path]
 ) -> List[FileData]:
-    files = [p for p in Path(str(cache_dir)).iterdir() if p.is_file()]
     return [
         FileData(
             path=str(file),
             sha=sha256_file(file)
         )
-        for file in files
+        for file in list_files(cache_dir)
     ]
 
 
@@ -106,7 +112,7 @@ def download_file(
 
 def download_fonts(
         *args,
-        cache_dir: Union[str, Path] = CACHE_DIR,
+        cache_dir: Union[str, Path] = FONT_CACHE_DIR,
         **kwargs
 ) -> List[str]:
     cache_dir = Path(str(cache_dir))
