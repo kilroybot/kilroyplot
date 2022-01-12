@@ -1,9 +1,10 @@
+import base64
 import hashlib
 import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
-from urllib.request import urlopen, urlretrieve
+from urllib.request import urlopen
 
 from appdirs import user_cache_dir
 from cachetools import cached
@@ -26,7 +27,7 @@ class AssetData:
     type: str
     sha: str
     url: str
-    size: Optional[str] = None
+    size: Optional[int] = None
 
     @property
     def filename(self) -> str:
@@ -51,13 +52,27 @@ class FileData:
         return Path(self.path).stem
 
 
-@cached(DiskTTLCache(ASSETS_CACHE_DIR))
-def search_assets(
-        search_url: str = ASSETS_SEARCH_URL,
+@dataclass
+class BlobData:
+    sha: str
+    node_id: str
+    size: int
+    url: str
+    content: str
+    encoding: str
+
+
+def get_response(
+        url: str,
         encoding: str = ENCODING
 ) -> Dict[str, Any]:
-    with urlopen(search_url) as url:
+    with urlopen(url) as url:
         return json.loads(url.read().decode(encoding=encoding))
+
+
+@cached(DiskTTLCache(ASSETS_CACHE_DIR))
+def search_assets(search_url: str = ASSETS_SEARCH_URL) -> Dict[str, Any]:
+    return get_response(search_url)
 
 
 def get_assets_data(
@@ -81,14 +96,16 @@ def get_available_fonts(
     ]
 
 
+def github_sha_base(contents: bytes) -> bytes:
+    return f"blob {len(contents)}\0".encode('utf-8') + contents
+
+
 def sha256_file(
         path: Union[str, Path]
 ) -> str:
-    sha = hashlib.sha256()
     with open(path, 'rb') as file:
-        while chunk := file.read(sha.block_size):
-            sha.update(chunk)
-    return sha.hexdigest()
+        contents = file.read()
+    return hashlib.sha1(github_sha_base(contents)).hexdigest()
 
 
 def get_cached_files(
@@ -103,11 +120,19 @@ def get_cached_files(
     ]
 
 
-def download_file(
+def get_blob(url: str) -> BlobData:
+    return BlobData(**get_response(url))
+
+
+def download_blob(
         url: str,
         to: Union[str, Path]
 ) -> str:
-    return urlretrieve(url, str(to))[0]
+    blob = get_blob(url)
+    content = base64.b64decode(blob.content)
+    with open(to, 'wb') as file:
+        file.write(content)
+    return to
 
 
 def download_fonts(
@@ -119,11 +144,11 @@ def download_fonts(
     cache_dir.mkdir(parents=True, exist_ok=True)
     fonts = get_available_fonts(*args, **kwargs)
     cached_fonts = get_cached_files(cache_dir)
-    cached_shas = set(font.sha for font in get_cached_files(cache_dir))
+    cached_shas = set(font.sha for font in cached_fonts)
     new_fonts = [font for font in fonts if font.sha not in cached_shas]
     new_fonts = [
         FileData(
-            path=download_file(font.url, cache_dir / font.filename),
+            path=download_blob(font.url, cache_dir / font.filename),
             sha=font.sha
         )
         for font in new_fonts
