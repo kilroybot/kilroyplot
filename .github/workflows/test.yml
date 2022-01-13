@@ -71,7 +71,7 @@ jobs:
       - name: Set up pip cache
         run: python3 -m pip config set global.cache-dir ${{ env.PIP_CACHE_DIR }}
       - name: Install poetry
-        run: python3 -m pip install poetry
+        run: python3 -m pip install -r requirements.txt
       - name: Set up poetry cache
         run: poetry config cache-dir ${{ env.POETRY_CACHE_DIR }}
       - # create and activate conda environment

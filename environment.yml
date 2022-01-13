@@ -1,3 +1,4 @@
 name: kilroyplot
 dependencies:
   - python==3.9.4
+  - pip==21.2.4
