@@ -18,7 +18,7 @@ For more info about the package itself see `kilroyplot/README.md`.
 $ apt update && apt install curl git python3 python3-pip python3-venv
 $ python3 -m pip install pipx && pipx install poetry
 $ pipx ensurepath && exec bash
-$ curl -sSL https://repo.anaconda.com/miniconda/Miniconda3-py39_4.9.2-Linux-x86_64.sh -o miniconda.sh
+$ curl -sSL https://repo.anaconda.com/miniconda/Miniconda3-py39_4.10.3-Linux-x86_64.sh -o miniconda.sh
 $ bash miniconda.sh && exec bash
 (base) $ git clone https://github.com/kilroybot/kilroyplot
 (base) $ cd kilroyplot
@@ -75,7 +75,7 @@ To install the package, you need to `cd` into `kilroyplot` directory and run:
 poetry install --extras dev --remove-untracked
 ```
 
-This will download and install all package dependencies (including optional development ones) and install the package in editable mode into the activate environment.
+This will download and install all package dependencies (including optional development ones) and install the package in editable mode into the activated environment.
 
 Editable mode means that you don't have to reinstall the package if you change something in the code.
 The changes are reflected automatically.
@@ -99,22 +99,6 @@ To execute the tests, run from project root:
 pytest kilroyplot
 ```
 
-## Bulding docs
-
-We are using [`mkdocs`](https://www.mkdocs.org) with [`material`](https://squidfunk.github.io/mkdocs-material) for building the docs.
-It lets you write the docs in Markdown format and creates a nice webpage for them.
-
-Docs should be placed in `kilroyplot/docs/docs`.
-They are pretty straightforward to write.
-
-To build the docs, `cd` into `kilroyplot/docs` and run:
-
-```sh
-mkdocs build
-```
-
-It will generate `site` directory with the webpage source.
-
 ## Adding new dependencies
 
 If you need to add a new dependency, look into `pyproject.toml` file.
@@ -132,17 +116,17 @@ Other people only need to run `poetry install` to adjust to the incoming changes
 
 ## Continuous Integration
 
-When you push changes to remote, different Github Actions run to ensure project consistency.
+When you push changes to remote, different GitHub Actions run to ensure project consistency.
 There are defined workflows for:
 
 - testing on different platforms
-- deploying docs to Github Pages
+- deploying docs to GitHub Pages
 - drafting release notes
 - uploading releases to PyPI
 
-For more info see the files in `.github/workflows` directory and `Actions` tab on Github.
+For more info see the files in `.github/workflows` directory and `Actions` tab on GitHub.
 
-Generally if you see a red mark next to your commit on Github or a failing status on badges in `README` it means the commit broke something (or workflows themselves are broken).
+Generally if you see a red mark next to your commit on GitHub or a failing status on badges in `README` it means the commit broke something (or workflows themselves are broken).
 
 ## Releases
 
@@ -164,4 +148,4 @@ To launch `jupyter lab` environment, `cd` to `notebooks` (although you might do 
 jupyter lab
 ```
 
-The developed package is installed in the environment so we can import it in the notebooks as any other package.
+The developed package is installed in the environment, so we can import it in the notebooks as any other package.
