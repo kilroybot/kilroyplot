@@ -8,12 +8,16 @@ from typing import (
     MutableMapping,
     Set,
     TypeVar,
-    Union
+    Union,
 )
 
-from appdirs import user_cache_dir
-
-from kilroyplot.utils import deserialize, digest_args, iter_files, serialize
+from kilroyplot.utils import (
+    deserialize,
+    digest_args,
+    iter_files,
+    pathify,
+    serialize,
+)
 
 K = TypeVar("K", bound=Hashable)
 V = TypeVar("V")
@@ -48,13 +52,13 @@ class DiskTTLCache(MutableMapping[K, V]):
         serialized_key: str
 
     def __init__(
-            self,
-            cache_dir: Union[str, Path] = DEFAULT_CACHE_DIR,
-            ttl: int = DEFAULT_TTL,
-            metadata_suffix: str = DEFAULT_METADATA_SUFFIX
+        self,
+        cache_dir: Union[str, Path],
+        ttl: int = DEFAULT_TTL,
+        metadata_suffix: str = DEFAULT_METADATA_SUFFIX,
     ) -> None:
         super().__init__()
-        self._cache_dir = Path(str(cache_dir))
+        self._cache_dir = pathify(cache_dir)
         self._cache_dir.mkdir(parents=True, exist_ok=True)
         self._ttl = ttl
         self._metadata_suffix = metadata_suffix
@@ -129,7 +133,7 @@ class DiskTTLCache(MutableMapping[K, V]):
         digest = self._key_to_digest(key)
         metadata = self.Metadata(
             save_time=self._time_to_str(datetime.datetime.utcnow()),
-            serialized_key=self._key_to_str(key)
+            serialized_key=self._key_to_str(key),
         )
         self._save_value(digest, value)
         self._save_metadata(digest, metadata)

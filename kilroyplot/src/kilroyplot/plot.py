@@ -18,24 +18,24 @@ def add_fonts() -> None:
 
 
 def configure(
-        style: str = STYLE,
-        dpi: int = DPI,
-        font_family: str = FONT_FAMILY,
-        font_weight: str = FONT_WEIGHT,
-        color_scheme: Sequence[str] = COLOR_SCHEME
+    style: str = STYLE,
+    dpi: int = DPI,
+    font_family: str = FONT_FAMILY,
+    font_weight: str = FONT_WEIGHT,
+    color_scheme: Sequence[str] = COLOR_SCHEME,
 ) -> None:
     """Configures matplotlib to use kilroy plot styling."""
     add_fonts()
     plt.style.use(style)
     plt.rcParams.update(
         {
-            "figure.dpi"      : dpi,
-            "font.family"     : font_family,
-            "font.weight"     : font_weight,
+            "figure.dpi": dpi,
+            "font.family": font_family,
+            "font.weight": font_weight,
             "axes.labelweight": font_weight,
             "axes.titleweight": font_weight,
-            "axes.prop_cycle" : cycler(color=color_scheme),
-            'mathtext.default': 'regular'
+            "axes.prop_cycle": cycler(color=color_scheme),
+            "mathtext.default": "regular",
         }
     )
 

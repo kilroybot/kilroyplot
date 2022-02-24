@@ -12,6 +12,7 @@ def pathify(path: Union[str, Path]) -> Path:
 
 def iter_files(directory: Union[str, Path]) -> Iterator[Path]:
     """Iterates over all files inside directory."""
+    return (p for p in pathify(directory).iterdir() if p.is_file())
 
 
 def list_files(directory: Union[str, Path]) -> List[Path]:
