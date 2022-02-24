@@ -8,19 +8,41 @@ from typing import (
     MutableMapping,
     Set,
     TypeVar,
-    Union
+    Union,
 )
 
-from appdirs import user_cache_dir
-
-from kilroyplot.utils import deserialize, digest_args, iter_files, serialize
+from kilroyplot.utils import (
+    deserialize,
+    digest_args,
+    iter_files,
+    pathify,
+    serialize,
+)
 
 K = TypeVar("K", bound=Hashable)
 V = TypeVar("V")
 
 
 class DiskTTLCache(MutableMapping[K, V]):
-    DEFAULT_CACHE_DIR = CACHE_DIR = Path(user_cache_dir("kilroy"))
+    """Disk cache with TTL.
+
+    Stores cached data in files on disk along with timestamp in metadata files.
+
+    On read, timestamp from metadata is validated and if more time passed than
+    TTL then old data is considered expired and is replaced by new data with
+    new timestamp metadata.
+
+    Data is stored in specified folder inside standard cache directory.
+    Name of the file is taken from MD5 hash of the key.
+
+    Metadata files are json files with the same name as data files and
+    '.metadata.json' suffix by default.
+
+    Default TTL is 86400 seconds, which corresponds to one day.
+
+    Can be used with cachetools.
+    """
+
     DEFAULT_TTL = 86400
     DEFAULT_METADATA_SUFFIX = ".metadata.json"
 
@@ -30,13 +52,13 @@ class DiskTTLCache(MutableMapping[K, V]):
         serialized_key: str
 
     def __init__(
-            self,
-            cache_dir: Union[str, Path] = DEFAULT_CACHE_DIR,
-            ttl: int = DEFAULT_TTL,
-            metadata_suffix: str = DEFAULT_METADATA_SUFFIX
+        self,
+        cache_dir: Union[str, Path],
+        ttl: int = DEFAULT_TTL,
+        metadata_suffix: str = DEFAULT_METADATA_SUFFIX,
     ) -> None:
         super().__init__()
-        self._cache_dir = Path(str(cache_dir))
+        self._cache_dir = pathify(cache_dir)
         self._cache_dir.mkdir(parents=True, exist_ok=True)
         self._ttl = ttl
         self._metadata_suffix = metadata_suffix
@@ -111,7 +133,7 @@ class DiskTTLCache(MutableMapping[K, V]):
         digest = self._key_to_digest(key)
         metadata = self.Metadata(
             save_time=self._time_to_str(datetime.datetime.utcnow()),
-            serialized_key=self._key_to_str(key)
+            serialized_key=self._key_to_str(key),
         )
         self._save_value(digest, value)
         self._save_metadata(digest, metadata)
