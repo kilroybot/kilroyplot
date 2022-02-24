@@ -96,6 +96,6 @@ jobs:
         name: Install package
         working-directory: kilroyplot
         # python from conda should be called just by 'python', not 'python3'
-        run: python -m pip install --find-links=dist kilroyplot[test]
+        run: python -m pip install --no-cache-dir --find-links=dist kilroyplot[test]
       - name: Run tests
         run: pytest kilroyplot
