@@ -24,6 +24,7 @@ def configure(
         font_weight: str = FONT_WEIGHT,
         color_scheme: Sequence[str] = COLOR_SCHEME
 ) -> None:
+    """Configures matplotlib to use kilroy plot styling."""
     add_fonts()
     plt.style.use(style)
     plt.rcParams.update(

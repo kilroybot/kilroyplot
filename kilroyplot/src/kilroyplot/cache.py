@@ -20,7 +20,25 @@ V = TypeVar("V")
 
 
 class DiskTTLCache(MutableMapping[K, V]):
-    DEFAULT_CACHE_DIR = CACHE_DIR = Path(user_cache_dir("kilroy"))
+    """Disk cache with TTL.
+
+    Stores cached data in files on disk along with timestamp in metadata files.
+
+    On read, timestamp from metadata is validated and if more time passed than
+    TTL then old data is considered expired and is replaced by new data with
+    new timestamp metadata.
+
+    Data is stored in specified folder inside standard cache directory.
+    Name of the file is taken from MD5 hash of the key.
+
+    Metadata files are json files with the same name as data files and
+    '.metadata.json' suffix by default.
+
+    Default TTL is 86400 seconds, which corresponds to one day.
+
+    Can be used with cachetools.
+    """
+
     DEFAULT_TTL = 86400
     DEFAULT_METADATA_SUFFIX = ".metadata.json"
 
