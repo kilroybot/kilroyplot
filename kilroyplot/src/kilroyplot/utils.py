@@ -37,5 +37,5 @@ def digest_bytes(x: bytes) -> str:
 
 def digest_args(*args, **kwargs) -> str:
     """Returns hex digest of any arguments."""
-    args = (args, frozenset(kwargs.items()))
+    args = (args, tuple(sorted(kwargs.items())))
     return digest_bytes(serialize(args))
