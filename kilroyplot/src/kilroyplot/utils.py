@@ -5,6 +5,11 @@ from typing import Iterator, List, Union
 import dill
 
 
+def pathify(path: Union[str, Path]) -> Path:
+    """Turns string or pathlib.Path into pathlib.Path."""
+    return Path(str(path))
+
+
 def iter_files(directory: Union[str, Path]) -> Iterator[Path]:
     return (p for p in Path(str(directory)).iterdir() if p.is_file())
 
