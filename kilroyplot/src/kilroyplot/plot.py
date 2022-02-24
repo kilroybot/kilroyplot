@@ -13,7 +13,7 @@ COLOR_SCHEME = ("#787CE0", "#E09290", "#6EE095", "#E0C863")
 
 
 def add_fonts() -> None:
-    for font_file in fonts.paths:
+    for font_file in fonts.get_fonts():
         font_manager.fontManager.addfont(font_file)
 
 

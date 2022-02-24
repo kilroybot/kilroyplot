@@ -177,6 +177,3 @@ def get_fonts(
     new_fonts = [font for font in fonts if font.sha not in cached_shas]
     new_fonts = download_fonts(new_fonts, cache_dir)
     return [font.path for font in cached_fonts + new_fonts]
-
-
-paths = get_fonts()
