@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kilroyplot"
-version = "0.2.1"
+version = "0.2.2"
 description = "kilroy plot styling 📊"
 readme = "README.md"
 authors = ["kilroy <kilroymail@pm.me>"]
