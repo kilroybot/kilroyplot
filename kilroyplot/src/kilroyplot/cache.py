@@ -70,10 +70,10 @@ class DiskTTLCache(MutableMapping[K, V]):
         return datetime.datetime.fromisoformat(x)
 
     def _key_to_str(self, k: K) -> str:
-        return serialize(k).decode("utf-8", errors="replace")
+        return serialize(k).decode("utf-8", errors="surrogateescape")
 
     def _str_to_key(self, x: str) -> K:
-        return deserialize(x.encode("utf-8", errors="replace"))
+        return deserialize(x.encode("utf-8", errors="surrogateescape"))
 
     def _key_to_digest(self, key: K) -> str:
         return digest_args(key)
