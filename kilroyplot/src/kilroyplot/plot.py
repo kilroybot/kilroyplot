@@ -32,6 +32,7 @@ def configure(
             "figure.dpi": dpi,
             "font.family": font_family,
             "font.weight": font_weight,
+            "figure.titleweight": font_weight,
             "axes.labelweight": font_weight,
             "axes.titleweight": font_weight,
             "axes.prop_cycle": cycler(color=color_scheme),
