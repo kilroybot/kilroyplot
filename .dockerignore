@@ -1,8 +1,0 @@
-*
-!kilroyplot/src/**
-!kilroyplot/pyproject.toml
-!kilroyplot/poetry.lock
-!kilroyplot/LICENSE
-!kilroyplot/README.md
-!environment.yml
-!requirements.txt
