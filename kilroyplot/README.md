@@ -2,7 +2,9 @@
 
 <div align="center">
 
-[![Running tests](https://github.com/kilroybot/kilroyplot/actions/workflows/test.yml/badge.svg)](https://github.com/kilroybot/kilroyplot/actions/workflows/test.yml)
+kilroy plot styling 📊
+
+[![Tests](https://github.com/kilroybot/kilroyplot/actions/workflows/test-multiplatform.yml/badge.svg)](https://github.com/kilroybot/kilroyplot/actions/workflows/test-multiplatform.yml)
 
 </div>
 
