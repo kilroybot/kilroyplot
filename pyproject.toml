@@ -3,7 +3,7 @@
 
 [tool.poetry]
 name = "kilroyplot"
-version = "0.2.3"
+version = "0.2.5"
 description = "kilroy plot styling 📊"
 readme = "kilroyplot/README.md"
 authors = ["kilroy <kilroymail@pm.me>"]
@@ -16,8 +16,7 @@ packages = [{ include = "kilroyplot", from = "kilroyplot/src" }]
 python = "^3.9"
 matplotlib = "^3.5"
 appdirs = "^1.4"
-dill = "^0.3"
-cachetools = "^4.2"
+diskcache = "^5.4"
 
 # dev
 jupyterlab = { version = "^3.2", optional = true }

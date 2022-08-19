@@ -10,19 +10,24 @@ from urllib.error import URLError
 from urllib.request import urlopen
 
 from appdirs import user_cache_dir
-from cachetools import cached
+from diskcache import Cache
 
-from kilroyplot.cache import DiskTTLCache
 from kilroyplot.utils import list_files, pathify
 
 ASSETS_SEARCH_URL = (
     "https://api.github.com/repos/kilroybot/assets/git/trees/main?recursive=1"
 )
+
 ENCODING = "utf-8"
 FORMAT = ".ttf"
-CACHE_DIR = Path(user_cache_dir("kilroy")) / "kilroyplot"
+
+CACHE_DIR = Path(user_cache_dir("kilroybot")) / "kilroyplot"
 ASSETS_CACHE_DIR = CACHE_DIR / "assets"
 FONT_CACHE_DIR = CACHE_DIR / "fonts"
+
+ASSETS_CACHE_EXPIRATION_TIME = 60 * 60 * 24 * 7
+
+assets_cache = Cache(str(ASSETS_CACHE_DIR))
 
 
 @dataclass
@@ -72,7 +77,7 @@ def get_response(url: str, encoding: str = ENCODING) -> Dict[str, Any]:
         return json.loads(url.read().decode(encoding=encoding))
 
 
-@cached(DiskTTLCache(ASSETS_CACHE_DIR))
+@assets_cache.memoize(expire=ASSETS_CACHE_EXPIRATION_TIME)
 def search_assets(search_url: str = ASSETS_SEARCH_URL) -> Dict[str, Any]:
     return get_response(search_url)
 
@@ -82,15 +87,13 @@ def get_assets_data(*args, **kwargs) -> List[AssetData]:
     return [AssetData(**asset) for asset in data["tree"]]
 
 
-def get_available_fonts(
-    *args, format: str = FORMAT, **kwargs
-) -> List[AssetData]:
+def get_available_fonts(*args, fmt: str = FORMAT, **kwargs) -> List[AssetData]:
     try:
         assets = get_assets_data(*args, **kwargs)
         return [
             asset
             for asset in assets
-            if asset.path.startswith("fonts/") and asset.path.endswith(format)
+            if asset.path.startswith("fonts/") and asset.path.endswith(fmt)
         ]
     except URLError:
         warnings.warn(
