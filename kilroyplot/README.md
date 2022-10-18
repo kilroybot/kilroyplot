@@ -4,7 +4,9 @@
 
 kilroy plot styling 📊
 
-[![Tests](https://github.com/kilroybot/kilroyplot/actions/workflows/test-multiplatform.yml/badge.svg)](https://github.com/kilroybot/kilroyplot/actions/workflows/test-multiplatform.yml)
+[![Lint](https://github.com/kilroybot/kilroyplot/actions/workflows/lint.yaml/badge.svg)](https://github.com/kilroybot/kilroyplot/actions/workflows/lint.yaml)
+[![Tests](https://github.com/kilroybot/kilroyplot/actions/workflows/test-multiplatform.yaml/badge.svg)](https://github.com/kilroybot/kilroyplot/actions/workflows/test-multiplatform.yaml)
+[![Docs](https://github.com/kilroybot/kilroyplot/actions/workflows/docs.yaml/badge.svg)](https://github.com/kilroybot/kilroyplot/actions/workflows/docs.yaml)
 
 </div>
 
