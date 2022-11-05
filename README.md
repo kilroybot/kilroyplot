@@ -14,9 +14,9 @@ kilroy plot styling 📊
 
 This `README` provides info about the development process.
 
-For more info about the package itself
-see `kilroyplot/README.md`
-or [docs](https://kilroybot.github.io/kilroyplot).
+For more info about the package itself see
+[package `README`](kilroyplot/README.md) or
+[docs](https://kilroybot.github.io/kilroyplot).
 
 ## Quickstart (on Ubuntu)
 
